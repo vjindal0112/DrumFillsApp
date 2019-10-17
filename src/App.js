@@ -8,31 +8,38 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      valueTrack: '',
+      valueArtist: '',
       error: null,
       isLoaded: false,
       items: []
     };
 
-    this.handleInput = this.handleInput.bind(this);
+    this.handleInputTrack = this.handleInputTrack.bind(this);
+    this.handleInputArtist = this.handleInputArtist.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInput(event) {
-    this.setState({ value: event.target.value })
+  handleInputTrack(event) {
+    this.setState({ valueTrack: event.target.value })
+  }
+  handleInputArtist(event) {
+    this.setState({ valueArtist: event.target.value })
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("https://itunes.apple.com/search?" + this.state.value);
+    console.log("theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack);
     // fetch not working yet
-    fetch("https://itunes.apple.com/search?" + this.state.value)
+    // fetch("https://itunes.apple.com/search?term=" + this.state.valueTrack)
+    fetch("http://theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack)
     .then(res => res.json())
       .then(
-        (result) => {
+        (res) => {
+          console.log(res.track);
           this.setState({
             isLoaded: true,
-            items: result.results
+            items: res.track
           });
         },
         // Note: it's important to handle errors here
@@ -41,12 +48,10 @@ class App extends Component {
         (error) => {
           this.setState({
             isLoaded: true,
-            error
+            error: error
           });
         }
       )
-
-    alert('api: ' + this.state.items);
   }
 
   render() {
@@ -64,7 +69,11 @@ class App extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="field">
             <div className="control">
-              <input className="input" value={this.state.value} type="text" placeholder="Input" onChange={this.handleInput}/>
+              <label>
+                <input className="input" value={this.state.valueTrack} type="text" placeholder="Track" onChange={this.handleInputTrack}/>
+                <input className="input" value={this.state.valueArtist} type="text" placeholder="Artist" onChange={this.handleInputArtist}/>
+              </label>
+              <input type="submit" value="Submit" />
             </div>
           </div>
         </form>
