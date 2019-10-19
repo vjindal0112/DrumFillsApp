@@ -30,7 +30,6 @@ class App extends Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log("theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack);
-    // fetch not working yet
     // fetch("https://itunes.apple.com/search?term=" + this.state.valueTrack)
     fetch("http://theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack)
     .then(res => res.json())
