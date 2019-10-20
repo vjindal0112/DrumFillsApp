@@ -35,15 +35,20 @@ class App extends Component {
     fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
-        Authorization: "Basic " + clientID + ":" + clientSecret
+         Authorization: 'Basic ' + (new Buffer(clientID + ':' + clientSecret).toString('base64'))
       },
       body: JSON.stringify({
-        grant_type: "client_credentials"
+        grant_type: "client_credentials",
+        // client_id: clientID,
+        // client_secret: clientSecret
       })
     })
       .then(function(response) {
         console.log(response);
-        // return response.json();
+        return response.json();
+      })
+      .catch((error) => {
+        console.log(error);
       })
       .then(function(data) {
         console.log(data);
