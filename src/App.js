@@ -21,37 +21,60 @@ class App extends Component {
   }
 
   handleInputTrack(event) {
-    this.setState({ valueTrack: event.target.value })
+    this.setState({ valueTrack: event.target.value });
   }
   handleInputArtist(event) {
-    this.setState({ valueArtist: event.target.value })
+    this.setState({ valueArtist: event.target.value });
   }
 
   handleSubmit(event) {
+    const clientID = "d8a0d3d21e3d4b77a3801bcb1c5d329e";
+    const clientSecret = "d27e239c4d434344bc1891b28cd11b3b";
+
     event.preventDefault();
-    console.log("theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack);
-    // fetch("https://itunes.apple.com/search?term=" + this.state.valueTrack)
-    fetch("http://theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack)
-    .then(res => res.json())
-      .then(
-        (res) => {
-          console.log(res.track);
-          this.setState({
-            isLoaded: true,
-            items: res.track
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error: error
-          });
-        }
-      )
+    // console.log("theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack);
+    fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + clientID + ":" + clientSecret,
+        type: "track",
+        q: this.state.valueTrack
+      },
+      body: JSON.stringify({
+        // firstParam: "yourValue",
+        // secondParam: "yourOtherValue"
+      })
+    });
   }
+
+
+
+    // fetch("https://itunes.apple.com/search?term=" + this.state.valueTrack)
+    // fetch("http://theaudiodb.com/api/v1/json/1/searchtrack.php?s=" + this.state.valueArtist + "&t=" + this.state.valueTrack)
+    // .then(res => res.json())
+    //   .then(
+    //     (res) => {
+    //       console.log(res.track);
+    //       this.setState({
+    //         isLoaded: true,
+    //         items: res.track
+    //       });
+    //     },
+    //     // Note: it's important to handle errors here
+    //     // instead of a catch() block so that we don't swallow
+    //     // exceptions from actual bugs in components.
+    //     (error) => {
+    //       this.setState({
+    //         isLoaded: true,
+    //         error: error
+    //       });
+    //     }
+    //   )
+
+    // }
+
+
+
 
   render() {
     return (
